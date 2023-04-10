@@ -9,11 +9,17 @@ import io.icker.factions.api.persistents.Faction;
 import io.icker.factions.api.persistents.User;
 import io.icker.factions.util.Command;
 import io.icker.factions.util.Message;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class CreateCommand implements Command {
@@ -36,6 +42,34 @@ public class CreateCommand implements Command {
         if (Faction.getByName(name) != null) {
             new Message("Cannot create a faction as a one with that name already exists").fail().send(player, false);
             return 0;
+        }
+
+        if (FactionsMod.CONFIG.ITEMS.REQUIRE_ITEMS && !User.get(player.getUuid()).bypass) {
+
+            PlayerInventory inventory = player.getInventory();
+
+            List<String> missing = new ArrayList<>();
+            List<ItemStack> stacks = new ArrayList<>();
+
+            FactionsMod.CONFIG.ITEMS.ITEMS.forEach((item, count) -> {
+                Identifier itemId = Identifier.tryParse(item);
+                if (itemId == null) return;
+                ItemStack stack = Registries.ITEM.get(itemId).getDefaultStack();
+                if (stack == null) return;
+                stack.setCount(count);
+                stacks.add(stack);
+                if (!inventory.contains(stack)) missing.add(stack.getName().getString() + " x" + count);
+            });
+
+            if (!missing.isEmpty()) {
+                new Message("Cannot create a faction as you don't have the required items, missing:\n" + String.join("\n", missing)).fail().send(player, false);
+                return 0;
+            } else {
+                stacks.forEach((ItemStack stack) -> {
+                    int slot = inventory.getSlotWithStack(stack);
+                    inventory.removeStack(slot, stack.getCount());
+                });
+            }
         }
 
         Faction faction = new Faction(name, "No description set", "No faction MOTD set", Formatting.WHITE, false, FactionsMod.CONFIG.POWER.BASE + FactionsMod.CONFIG.POWER.MEMBER);
