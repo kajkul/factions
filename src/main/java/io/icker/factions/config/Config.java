@@ -12,7 +12,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.lang.reflect.Type;
 import java.util.List;
-
 public class Config {
     private static final int REQUIRED_VERSION = 3;
     private static final File file = FabricLoader.getInstance().getGameDir().resolve("config").resolve("factions.json").toFile();
@@ -25,6 +24,7 @@ public class Config {
             .registerTypeAdapter(HomeConfig.class, new Deserializer<>(HomeConfig.class))
             .registerTypeAdapter(PowerConfig.class, new Deserializer<>(PowerConfig.class))
             .registerTypeAdapter(SafeConfig.class, new Deserializer<>(SafeConfig.class))
+            .registerTypeAdapter(ItemsConfig.class, new Deserializer<>(ItemsConfig.class))
             .create();
 
         try {
@@ -69,6 +69,9 @@ public class Config {
 
     @SerializedName("display")
     public DisplayConfig DISPLAY = new DisplayConfig();
+
+    @SerializedName("items")
+    public ItemsConfig ITEMS = new ItemsConfig();
 
     @SerializedName("relationships")
     public RelationshipConfig RELATIONSHIPS = new RelationshipConfig();
