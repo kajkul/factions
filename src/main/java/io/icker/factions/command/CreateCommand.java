@@ -76,6 +76,14 @@ public class CreateCommand implements Command {
         Faction.add(faction);
         Command.getUser(player).joinFaction(faction.getID(), User.Rank.OWNER);
 
+        if (FactionsMod.CONFIG.AUTO_CLAIM.ENABLE) {
+            if(ClaimCommand.addForced(context, FactionsMod.CONFIG.AUTO_CLAIM.CLAIM_RADIUS) == 0) {
+                new Message("Cannot create a faction as another faction is too close").fail().send(player, false);
+                faction.remove();
+                return 0;
+            }
+        }
+
         source.getServer().getPlayerManager().sendCommandTree(player);
         new Message("Successfully created faction").send(player, false);
         return 1;

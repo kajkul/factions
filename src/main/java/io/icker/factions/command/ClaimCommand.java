@@ -64,7 +64,7 @@ public class ClaimCommand implements Command {
         return 1;
     }
 
-    private int addForced(CommandContext<ServerCommandSource> context, int size) throws CommandSyntaxException {
+    public static int addForced(CommandContext<ServerCommandSource> context, int size) throws CommandSyntaxException {
         ServerCommandSource source = context.getSource();
 
         ServerPlayerEntity player = source.getPlayer();

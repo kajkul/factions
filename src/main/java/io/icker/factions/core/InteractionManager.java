@@ -176,6 +176,10 @@ public class InteractionManager {
             return ActionResult.PASS;
         }
 
+        if (FactionsMod.CONFIG.DEFAULT_PERMISSIONS.contains(permission)) {
+            return ActionResult.PASS;
+        }
+
         User user = User.get(player.getUuid());
         if (player.hasPermissionLevel(FactionsMod.CONFIG.REQUIRED_BYPASS_LEVEL) && user.bypass) {
             return ActionResult.PASS;

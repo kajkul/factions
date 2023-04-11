@@ -73,6 +73,9 @@ public class Config {
     @SerializedName("items")
     public ItemsConfig ITEMS = new ItemsConfig();
 
+    @SerializedName("autoClaim")
+    public AutoClaimConfig AUTO_CLAIM = new AutoClaimConfig();
+
     @SerializedName("relationships")
     public RelationshipConfig RELATIONSHIPS = new RelationshipConfig();
 
@@ -87,6 +90,16 @@ public class Config {
 
     @SerializedName("claimProtections")
     public boolean CLAIM_PROTECTION = true;
+
+    public List<Relationship.Permissions> DEFAULT_PERMISSIONS = List.of(Relationship.Permissions.ATTACK_ENTITIES);
+
+    public static class AutoClaimConfig {
+        @SerializedName("enableAutoClaim")
+        public boolean ENABLE = false;
+
+        @SerializedName("autoClaimChunkRadius")
+        public int CLAIM_RADIUS = 4;
+    }
 
     public static class DisplayConfig {
         @SerializedName("factionNameMaxLength")

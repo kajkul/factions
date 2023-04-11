@@ -11,7 +11,7 @@ import io.icker.factions.api.persistents.Home;
 import io.icker.factions.util.Command;
 import io.icker.factions.util.Message;
 import net.minecraft.entity.damage.DamageRecord;
-import net.minecraft.registry.RegistryKey;
+
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -19,6 +19,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 import java.util.Objects;
